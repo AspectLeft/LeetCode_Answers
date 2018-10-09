@@ -7,18 +7,18 @@
  * }
  */
 public class Solution {
+    private TreeLinkNode uncle = null;
     public void connect(TreeLinkNode root) {
         if (root == null) return;
-        if (root.left != null)
-            link(root.left, root.right);
-    }
-    
-    private void link(TreeLinkNode l, TreeLinkNode r) {
-        l.next = r;
-        if (l.left != null) {
-            link(l.left, l.right);
-            link(l.right, r.left);
-            link(r.left, r.right);
+        connect(root.left);
+        connect(root.right);
+        TreeLinkNode l = root.left, r = root.right;
+        
+        while (l != null) {
+            l.next = r;
+            l = l.right;
+            r = r.left;
         }
+        
     }
 }
