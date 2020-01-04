@@ -67,19 +67,18 @@ class Solution {
     
     List<List<String>> output = new ArrayList<>();
     
-    private void dfs(LinkedList<String> table) {
-        if (table.size() == n) {
+    private void dfs(String[] table, int current) {
+        if (current == n) {
             List<String> result = new ArrayList<>();
-            result.addAll(table);
+            result.addAll(Arrays.asList(table));
             output.add(result);
             return;
         }
         
         StringBuilder prefixBuilder = new StringBuilder();
         
-        int offset = table.size();
-        for (int i = 0; i < table.size(); ++i) {
-            prefixBuilder.append(table.get(i).charAt(offset));
+        for (int i = 0; i < current; ++i) {
+            prefixBuilder.append(table[i].charAt(current));
         }
         Iterable<String> nextList;
         if (prefixBuilder.length() == 0) {
@@ -90,9 +89,8 @@ class Solution {
         }
         
         for (String next: nextList) {
-            table.addLast(next);
-            dfs(table);
-            table.removeLast();
+            table[current] = next;
+            dfs(table, current + 1);
         }
         
     }
@@ -106,7 +104,9 @@ class Solution {
             put(word);
         }
         
-        dfs(new LinkedList<>());
+        String[] table = new String[n];
+        
+        dfs(table, 0);
         
         return output;
     }
